@@ -12,4 +12,21 @@ $c->bind(
     }
 );
 
+$c->bind(
+    \Qps\Feature\DesignPattern\Decorator\ApiClientA::class,
+    function () {
+        return new \Qps\Feature\DesignPattern\Decorator\ApiClientA(
+            new \GuzzleHttp\Client()
+        );
+    }
+);
+$c->bind(
+    \Qps\Feature\DesignPattern\Decorator\ApiClientB::class,
+    function (Illuminate\Container\Container $c) {
+        return new \Qps\Feature\DesignPattern\Decorator\ApiClientB(
+            new \GuzzleHttp\Client()
+        );
+    }
+);
+
 return $c;
