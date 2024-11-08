@@ -13,18 +13,26 @@ $c->bind(
 );
 
 $c->bind(
-    \Qps\Feature\DesignPattern\Decorator\ApiClientA::class,
+    \Qps\Feature\DesignPattern\Decorator\AuthClient::class,
     function () {
-        return new \Qps\Feature\DesignPattern\Decorator\ApiClientA(
+        return new \Qps\Feature\DesignPattern\Decorator\AuthClient(
             new \GuzzleHttp\Client()
         );
     }
 );
 $c->bind(
+    \Qps\Feature\DesignPattern\Decorator\ApiClientA::class,
+    function (\Illuminate\Container\Container $c) {
+        return new \Qps\Feature\DesignPattern\Decorator\ApiClientA(
+            $c->make(\Qps\Feature\DesignPattern\Decorator\AuthClient::class)
+        );
+    }
+);
+$c->bind(
     \Qps\Feature\DesignPattern\Decorator\ApiClientB::class,
-    function (Illuminate\Container\Container $c) {
+    function (\Illuminate\Container\Container $c) {
         return new \Qps\Feature\DesignPattern\Decorator\ApiClientB(
-            new \GuzzleHttp\Client()
+            $c->make(\Qps\Feature\DesignPattern\Decorator\AuthClient::class)
         );
     }
 );
